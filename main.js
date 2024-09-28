@@ -79,7 +79,7 @@ function createToken(user) {
       let username = req.body.username;
       let password = req.body.password;
 
-      let token = req.header.authorization;
+      let token = req.header.authorization || req.cookies.Token;
       if(token || req.cookies.Token) {
         res.json({
           error: "2",
@@ -112,6 +112,23 @@ function createToken(user) {
         });
       }
     })
+
+    app.post("/api/logout", (req, res) => {
+      let token = req.header.authorization || req.cookies.Token;
+
+      if(token) {
+
+        res.json({
+          success: "3",
+          content: "Logout successful goodbye :)",
+        });
+      } else {
+        res.json({
+          error: "3",
+          content: "User not logged in"
+        });
+      }
+    });
     
     app.listen(8080, (err) => {
       console.log("Listening on port 8080");
