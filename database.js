@@ -1,0 +1,12 @@
+const mongoose = require("mongoose");
+
+
+let UserSchema = new mongoose.Schema({
+    username: String,
+    hashPassword: String,
+    joinDate: Number,
+});
+
+module.exports = {
+    UserSchema: UserSchema
+}
