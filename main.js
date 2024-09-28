@@ -59,7 +59,11 @@ function createToken(user) {
 
       if(user) {
         let jwt = await createToken({username});
-        res.send("Signup succesful: " + jwt);
+        res.cookie("Token", jwt);
+        res.json({
+          success: 1,
+          Token: jwt
+        });
       } else {
         res.json({
           error: "1",
