@@ -3,12 +3,14 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { UserSchema } = require("./database.js");
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
 
 const app = express();
 
 const key = "hackUMBC2024";
 app.use(express.json());
+app.use(cookieParser());
 
 function createToken(user) {
   let payload = {
@@ -58,7 +60,7 @@ function createToken(user) {
 
 
       if(user) {
-        let jwt = await createToken({username});
+        let jwt = createToken({username});
         res.cookie("Token", jwt);
         res.json({
           success: 1,
@@ -71,6 +73,45 @@ function createToken(user) {
         })
       }
     });
+
+
+    app.post("/api/login", async (req, res) => {
+      let username = req.body.username;
+      let password = req.body.password;
+
+      let token = req.header.authorization;
+      if(token || req.cookies.Token) {
+        res.json({
+          error: "2",
+          content: "Already logged in"
+        });
+
+        return;
+      }
+
+      let user = await User.findOne({username}).exec();
+
+      if(!user) {
+        res.json({
+          error: "2",
+          content: "Username not found"
+        });
+        return;
+      }
+
+      let correctPassword = await bcrypt.compare(password, user.hashPassword);
+
+      if(correctPassword) {
+        let jwt = createToken({username});
+
+        res.cookie("Token", jwt);
+        res.json({
+          success: "1",
+          content: "Login successful",
+          Token: jwt
+        });
+      }
+    })
     
     app.listen(8080, (err) => {
       console.log("Listening on port 8080");
