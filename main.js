@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const bycrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const { UserSchema } = require("./database.js");
 require('dotenv').config();
 
@@ -47,12 +47,12 @@ function createToken(user) {
         return;
       }
 
-      let salt = await bycrypt.genSalt(10);
-      let hashedPassword = await bycrypt.hashedPassword(password, salt);
+      let salt = await bcrypt.genSalt(10);
+      let hashedPassword = await bcrypt.hash(password, salt);
 
       user = await User.create({
         username: username,
-        password: hashedPassword,
+        hashPassword: hashedPassword,
         joinDate: Date.now()
       });
 
