@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const { UserSchema } = require("./database.js");
 const { generate_careers } = require("./prompts.js")
 const cookieParser = require("cookie-parser");
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +13,8 @@ const app = express();
 const key = "hackUMBC2024";
 app.use(express.json());
 app.use(cookieParser());
+app.use("/assets", express.static("./dist/assets"));
+app.use("/", express.static("./dist"));
 
 function createToken(user) {
   let payload = {
@@ -59,8 +62,7 @@ function verifyToken(req, res, next) {
     let User = new mongoose.model("Users", UserSchema);
 
     app.get("/", (req, res) => {
-      const token = req.headers.authorization;
-      res.send("Hello World");
+      res.sendFile(path.join(__dirname, './dist/index.html'));
     });
     
     app.post("/api/signup", async (req, res) => {

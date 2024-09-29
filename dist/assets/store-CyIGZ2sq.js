@@ -1,0 +1,1 @@
+import{D as r}from"./index-8PHg_U0O.js";const s=r("global",{state:()=>({version:"1.1.0",isLoggedIn:!0,username:"Greg",currentTitles:[]}),getters:{getVersion:e=>e.version},actions:{setCurrentTitles(e){this.currentTitles=e}}});export{s as u};
