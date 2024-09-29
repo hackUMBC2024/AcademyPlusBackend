@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { UserSchema } = require("./database.js");
+const { generate_careers } = require("./prompts.js")
 const cookieParser = require("cookie-parser");
 require('dotenv').config();
 
@@ -214,12 +215,15 @@ function verifyToken(req, res, next) {
       })
     });
 
-    app.post("/api/careerCheck", verifyToken, (req, res) => {
+    app.post("/api/careerCheck", verifyToken, async (req, res) => {
       try {
         const topicTitle = req.body.title;
-        
+        let text =  await generate_careers(topicTitle);
+        res.json({
+          content: text,
+        });
       } catch(error) {
-
+        console.log(error);
       }
     });
     
