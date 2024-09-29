@@ -82,6 +82,7 @@ function verifyToken(req, res, next) {
       user = await User.create({
         username: username,
         hashPassword: hashedPassword,
+        previousCourses: [],
         joinDate: Date.now()
       });
 
