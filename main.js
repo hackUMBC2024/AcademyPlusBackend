@@ -144,7 +144,7 @@ function verifyToken(req, res, next) {
       }
     })
 
-    app.post("/api/logout", (req, res) => {
+    app.get("/api/logout", verifyToken, (req, res) => {
       let token = req.header.authorization || req.cookies.Token;
 
       if(token) {
