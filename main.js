@@ -21,6 +21,33 @@ function createToken(user) {
 }
 
 
+function verifyToken(req, res, next) {
+  let token = req.header.authorization || req.cookies.Token;
+
+  if(!token) {
+    res.json({
+     error: "99",
+      content: "UNAUTHORIZED USER"
+    });
+    return;
+  }
+
+  jwt.verify(token, key, (err, decoded) => {
+    if(err) {
+      console.log(err);
+      res.json({
+        error: "50",
+         content: "What the token is going on here"
+       });
+       return;
+    }
+
+    req.user = decoded;
+  });
+
+  next();
+}
+
 (async function(){
   try {
     console.log(process.env.MONGO_URI)
@@ -128,6 +155,17 @@ function createToken(user) {
           content: "User not logged in"
         });
       }
+    });
+
+    //LLM Generates Content here
+    app.post("/api/search", verifyToken, (req, res) => {
+
+    });
+
+    app.get("/api/userdata", verifyToken ,(req, res) => {
+      res.json({
+        username: req.user.username,
+      })
     });
     
     app.listen(8080, (err) => {
