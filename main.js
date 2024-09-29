@@ -161,7 +161,51 @@ function verifyToken(req, res, next) {
 
     //LLM Generates Content here
     app.post("/api/search", verifyToken, (req, res) => {
+      try {
+        const topic = req.body.searchTerm;
+        const response = await fetch('http://localhost:11434/api/generate', {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `{\n  \"model\": \"llama3.2\",\n  \"prompt\": \"Generate ten titles for ten lessons on the topic '${topic}'. Respond using a JSON object with keys from 0-9 and values being the lesson titles\",\n  \"stream\": false,\n  \"format\": \"json\",\n  \"temperature\": \"0.5\"\n}`
+        });
+        const data = await response.json();
+        if (data.response === undefined || data.response.length === 0) {
+          throw new Error('Bad search model output');
+        }
+        res.json({
+          success: '4',
+          content: data.response
+        })
+      } catch (err) {
+        res.json({
+          error: '4',
+          content: 'Bad lesson titles model output'
+        })
+      }
+    });
 
+    app.post("/api/searchContent", verifyToken, (req, res) => {
+      try {
+        const topicTitle = req.body.title;
+        const response = await fetch('http://localhost:11434/api/generate', {
+          method: 'POST', 
+          headers: requestHeaders,
+          body: `{\n\"model\": \"llama3.2\",\n\"prompt\": \"Generate a lengthy lesson without a table of contents using markdown (and latex when possible) on '${topicTitle}'. Don't include any quizzes or assignments, but consider including relevant and intermediate practice problems\",\n\"stream\": false,\n\"temperature\": \"0.5\"\n}`
+        });
+        const data = await response.json();
+        if (data.response === undefined || data.response.length === 0) {
+          throw new Error('Bad model output');
+        }
+        res.json({
+          success: '5',
+          content: data.response
+        })
+      } catch (err) {
+        res.json({
+          error: '5',
+          content: 'Bad lesson model output'
+        })
+      }
     });
 
     app.get("/api/userdata", verifyToken ,(req, res) => {
