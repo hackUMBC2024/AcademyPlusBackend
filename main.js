@@ -192,7 +192,7 @@ function verifyToken(req, res, next) {
         const topicTitle = req.body.title;
         const response = await fetch('http://localhost:11434/api/generate', {
           method: 'POST', 
-          headers: requestHeaders,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `{\n\"model\": \"llama3.2\",\n\"prompt\": \"Generate a lengthy lesson without a table of contents using markdown (and latex when possible) on '${topicTitle}'. Don't include any quizzes or assignments, but consider including relevant and intermediate practice problems\",\n\"stream\": false,\n\"temperature\": \"0.5\"\n}`
         });
         const data = await response.json();
@@ -204,6 +204,7 @@ function verifyToken(req, res, next) {
           content: data.response
         })
       } catch (err) {
+        console.log(err);
         res.json({
           error: '5',
           content: 'Bad lesson model output'
