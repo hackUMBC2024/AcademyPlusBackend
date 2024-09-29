@@ -145,7 +145,8 @@ function verifyToken(req, res, next) {
       let token = req.header.authorization || req.cookies.Token;
 
       if(token) {
-
+        res.clearCookie("Token");
+        
         res.json({
           success: "3",
           content: "Logout successful goodbye :)",
