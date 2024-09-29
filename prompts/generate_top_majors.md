@@ -9,13 +9,12 @@ In order to determine your output, let's think step by step.
 3. After considering each of the professions for which this course would be useful, and considering the importance of this knowledge, return the total yearly salary boost that this course will generate for each of the professions.
 </steps>
 
-Format your output in the following manner:
+Format your output in the following manner, where salary boost is labeled in United States Dollar amounts:
 <output>
-- profession_1
-- Profession_1_salary_boost = +$1000
-- profession_2
-- Profession_2_salary_boost = +$1500
-...
-- profession_5
-- Profession_5_salary_boost = +$2000
+- profession_1 (profession_1_salary_boost)
+- profession_2 (profession_2_salary_boost)
+- profession_3 (profession_3_salary_boost)
+- profession_4 (profession_4_salary_boost)
+- profession_5 (profession_5_salary_boost)
 </output>
+Under no circumstances should you include explanations for the professions you choose, or the salary boost that you predict. Do not include any explanations for any of your choices. Do not include any explanation for why you organized your professions in a certain manner, or how you generated the predicted salary boost. The only output should be in the above format.
