@@ -160,7 +160,7 @@ function verifyToken(req, res, next) {
     });
 
     //LLM Generates Content here
-    app.post("/api/search", verifyToken, (req, res) => {
+    app.post("/api/search", verifyToken, async (req, res) => {
       try {
         const topic = req.body.searchTerm;
         const response = await fetch('http://localhost:11434/api/generate', {
@@ -184,7 +184,7 @@ function verifyToken(req, res, next) {
       }
     });
 
-    app.post("/api/searchContent", verifyToken, (req, res) => {
+    app.post("/api/searchContent", verifyToken, async (req, res) => {
       try {
         const topicTitle = req.body.title;
         const response = await fetch('http://localhost:11434/api/generate', {
@@ -212,6 +212,15 @@ function verifyToken(req, res, next) {
       res.json({
         username: req.user.username,
       })
+    });
+
+    app.post("/api/careerCheck", verifyToken, (req, res) => {
+      try {
+        const topicTitle = req.body.title;
+        
+      } catch(error) {
+
+      }
     });
     
     app.listen(8080, (err) => {
