@@ -161,7 +161,7 @@ function verifyToken(req, res, next) {
 
     //LLM Generates Content here
     app.post("/api/search", verifyToken, (req, res) => {
-
+      
     });
 
     app.get("/api/userdata", verifyToken ,(req, res) => {
